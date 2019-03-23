@@ -1,6 +1,7 @@
 import os, sys, requests, io, json
 from zipfile import ZipFile
 from PIL import Image
+import numpy as np, cv2
 
 def upload(url, fpath):
 	with open(fpath, 'rb') as f:
@@ -58,11 +59,18 @@ def downloadZip(url):
 		objDict = {}
 		for i, lineList in enumerate(csvList):
 			fname, score, label, cmin, rmin, cmax, rmax = lineList
-			# objDict.update({
+			maskimg = np.array(Image.open(zf.open(fname)))
+			maskimg[maskimg > 0] = 255
+			objDict.update({
+				i : {
+					'score' : score,
+					'label' : label,
+					'bb' 	: [cmin, rmin, cmax, rmax],
+					'mask'  : maskimg
+				}
+			})
 
-			# })
-
-		return csvList, objDict
+		return objDict
 
 if __name__ == '__main__':
 	url = sys.argv[1]
@@ -82,9 +90,5 @@ if __name__ == '__main__':
 	outDir = 'download'
 	if not os.path.exists(outDir):
 		os.makedirs(outDir)
-	csvList, memberList = downloadZip(retUrl)
-	print(csvList)
-	count = 0
-	for member in memberList:
-		member.save(os.path.join(outDir, str(count) + '.png'))
-		count += 1
+	objDict = downloadZip(retUrl)
+	print(objDict)
