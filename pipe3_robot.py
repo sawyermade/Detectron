@@ -49,7 +49,7 @@ def downloadZip(url):
 					# lineList = [str, float, str, int, int, int, int]
 					lineList = line.strip('\n').split(',')
 					lineList[1] = float(lineList[1])
-					lineList[2:] = [int(f) for f in lineList[2:]]
+					lineList[3:] = [int(f) for f in lineList[3:]]
 					csvList.append(lineList)
 				csvFile.close()
 				break
