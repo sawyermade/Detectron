@@ -40,6 +40,7 @@ def downloadZip(url):
 	with ZipFile(fname, 'r') as zf:
 		# Gets csv file
 		flist = zf.namelist()
+		print(flist)
 		for f in flist:
 			if f.endswith('csv'):
 				csvFile = zf.open(f, 'r')
@@ -66,9 +67,16 @@ def downloadZip(url):
 					'score' : score,
 					'label' : label,
 					'bb' 	: [cmin, rmin, cmax, rmax],
-					'mask'  : maskimg
+					'mask'  : maskimg,
+					'fname' : fname
 				}
 			})
+
+		# Adds visualed image
+		fname = [f for f in flist if f == 'vis.py'][0]
+		vis = np.array(Image.open(zf.open(fname)))
+		vis = cv2.cvtColor(vis, cv2.COLOR_RGB2BGR)
+		objDict.update({'vis' : vis})
 
 		return objDict
 
@@ -91,4 +99,10 @@ if __name__ == '__main__':
 	if not os.path.exists(outDir):
 		os.makedirs(outDir)
 	objDict = downloadZip(retUrl)
-	print(objDict)
+	# print(objDict)
+	for obj, objDict in objDict.items():
+		mask = objDict['mask']
+		fname = objDict['fname']
+		fpath = os.path.join(outDir, fname)
+		cv2.imwrite(fpath, mask)
+	cv2.imwrite(os.path.join(outDir, 'vis.png'), objDict['vis'])

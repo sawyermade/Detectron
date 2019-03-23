@@ -235,6 +235,13 @@ def upload_file():
 			# 	for oname in onameList:
 			# 		fl.write(oname + '\n')
 
+			# Save image
+			ofname = os.path.basename(fname) + '-out.' + args.output_ext
+			out_name = os.path.join(args.output_dir, ofname)
+			cv2.imwrite(out_name, cvimg)
+			opathList.append(out_name)
+			arcnameList.append('vis.' + args.output_ext)
+
 			# Zip files
 			zipFname = fname + '.zip'
 			zipFpath = os.path.join(args.output_dir, zipFname)
@@ -249,12 +256,7 @@ def upload_file():
 			# for count, box in enumerate(bbList):
 			# 	print(count, box, classList[count], scoreList[count])
 
-			# Save image
-			# ofname = os.path.basename(fname) + '-out.' + args.output_ext
-			# out_name = os.path.join(args.output_dir, ofname)
-			# cv2.imwrite(out_name, cvimg)
-			# with open(out_name, 'w') as of:
-			# 	json.dump(of, jsonDict, indent=2)
+			
 
 			# retUrl = os.path.join(FULLDOMAIN, UPLOAD_FOLDER, zipFname)
 			retUrl = FULLDOMAIN + UPLOAD_FOLDER_REL + zipFname
