@@ -54,15 +54,15 @@ def downloadZip(url):
 				csvFile.close()
 				break
 
-		# Rips images out of zip file
+		# # Rips images out of zip file
 		objDict = {}
 		for i, lineList in enumerate(csvList):
 			fname, score, label, cmin, rmin, cmax, rmax = lineList
-			objDict.update({
+			# objDict.update({
 
-			})
+			# })
 
-		return csvList, memberList
+		return csvList, objDict
 
 if __name__ == '__main__':
 	url = sys.argv[1]
