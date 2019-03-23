@@ -249,9 +249,9 @@ def upload_file():
 			# 	print(count, box, classList[count], scoreList[count])
 
 			# Save image
-			ofname = os.path.basename(fname) + '-out.' + args.output_ext
-			out_name = os.path.join(args.output_dir, ofname)
-			cv2.imwrite(out_name, cvimg)
+			# ofname = os.path.basename(fname) + '-out.' + args.output_ext
+			# out_name = os.path.join(args.output_dir, ofname)
+			# cv2.imwrite(out_name, cvimg)
 			# with open(out_name, 'w') as of:
 			# 	json.dump(of, jsonDict, indent=2)
 
