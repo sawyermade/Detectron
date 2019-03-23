@@ -194,7 +194,7 @@ def upload_file():
 				show_class=True,
 				show_box=True,
 				thresh=args.thresh,
-				kp_thresh=2.0
+				kp_thresh=args.kp_thresh
 			)
 
 			bbList, classList, scoreList, masks = retVals
