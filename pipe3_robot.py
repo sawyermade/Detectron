@@ -37,21 +37,31 @@ def downloadZip(url):
 		of.write(r.content)
 
 	with ZipFile(fname, 'r') as zf:
-		# zf.printdir()
+		# Gets csv file
 		flist = zf.namelist()
-		memberList = []
 		for f in flist:
 			if f.endswith('csv'):
 				csvFile = zf.open(f, 'r')
 				csvList = []
 				for line in csvFile:
 					line = line.decode('utf-8')
-					csvList.append(line.strip('\n'))
+
+					# lineList = [str, float, str, int, int, int, int]
+					lineList = line.strip('\n').split(',')
+					lineList[1] = float(lineList[1])
+					lineList[2:] = [int(f) for f in lineList[2:]]
+					csvList.append(lineList)
 				csvFile.close()
-			else:
-				memberList.append(Image.open(zf.open(f)))
-		# infoList = zf.infolist()
-		# print(zf.namelist())
+				break
+
+		# Rips images out of zip file
+		objDict = {}
+		for i, lineList in enumerate(csvList):
+			fname, score, label, cmin, rmin, cmax, rmax = lineList
+			objDict.update({
+
+			})
+
 		return csvList, memberList
 
 if __name__ == '__main__':

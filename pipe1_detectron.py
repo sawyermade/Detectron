@@ -212,7 +212,7 @@ def upload_file():
 			with open(out_name, 'w') as of:
 				for bb, cl, sc, ma in zip(bbList, classList, scoreList, maskList):
 					# Adds info to csv
-					ostr = ','.join((str(count) + '.' + args.output_ext, str(sc), str(cl), str(bb[0]), str(bb[1]), str(bb[2]), str(bb[3])))
+					ostr = ','.join((str(count) + '.' + args.output_ext, str(sc), str(cl), str(bb[0]), str(bb[1]), str(bb[0]+bb[2]), str(bb[1]+bb[3])))
 					of.write(ostr + '\n')
 					# print(ostr)
 
