@@ -185,7 +185,7 @@ def upload_file():
 			# def vis_one_image_opencv(
 			# im, boxes, segms=None, keypoints=None, thresh=0.9, kp_thresh=2,
 			# show_box=False, dataset=None, show_class=False):
-			print('*************** vis_one_image_opencv')
+			# print('*************** vis_one_image_opencv')
 			cvimg, retVals = vis_utils.vis_one_image_opencv(
 				im, 
 				cls_boxes,
@@ -197,7 +197,7 @@ def upload_file():
 				thresh=args.thresh,
 				kp_thresh=args.kp_thresh
 			)
-			print('*************** after')
+			# print('*************** after')
 			if not retVals:
 				return '***** No Objects Found!!! *****'
 
@@ -252,7 +252,7 @@ def upload_file():
 			with ZipFile(zipFpath, 'w') as ofz:
 				# print(opathList, arcnameList)
 				for opath, arcname in zip(opathList, arcnameList):
-					print(opath, arcname)
+					# print(opath, arcname)
 					ofz.write(opath, arcname=arcname)
 
 
