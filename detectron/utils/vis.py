@@ -217,7 +217,7 @@ def vis_one_image_opencv(
             boxes, segms, keypoints)
     print('*********** in vis')
     if boxes is None or boxes.shape[0] == 0 or max(boxes[:, 4]) < thresh:
-        return im
+        return im, None
     print('*********** in vis')
     if segms is not None and len(segms) > 0:
         masks = mask_util.decode(segms)

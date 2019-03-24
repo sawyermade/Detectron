@@ -198,6 +198,9 @@ def upload_file():
 				kp_thresh=args.kp_thresh
 			)
 			print('*************** after')
+			if retVals == None or cvimg == None:
+				return '***** No Objects Found!!! *****'
+
 			bbList, classList, scoreList, masks = retVals
 			maskList = []
 			for i in range(masks.shape[-1]):
