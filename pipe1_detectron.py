@@ -185,6 +185,7 @@ def upload_file():
 			# def vis_one_image_opencv(
 			# im, boxes, segms=None, keypoints=None, thresh=0.9, kp_thresh=2,
 			# show_box=False, dataset=None, show_class=False):
+			print('*************** vis_one_image_opencv')
 			cvimg, retVals = vis_utils.vis_one_image_opencv(
 				im, 
 				cls_boxes,

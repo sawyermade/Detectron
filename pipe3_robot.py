@@ -73,10 +73,10 @@ def downloadZip(url):
 			})
 
 		# Adds visualed image
-		fname = [f for f in flist if f == 'vis.py'][0]
+		fname = [f for f in flist if f.startswith('vis')][0]
 		vis = np.array(Image.open(zf.open(fname)))
 		vis = cv2.cvtColor(vis, cv2.COLOR_RGB2BGR)
-		objDict.update({'vis' : vis})
+		objDict.update({'vis' : {'mask' : vis, 'fname' : fname}})
 
 		return objDict
 
@@ -100,9 +100,10 @@ if __name__ == '__main__':
 		os.makedirs(outDir)
 	objDict = downloadZip(retUrl)
 	# print(objDict)
-	for obj, objDict in objDict.items():
-		mask = objDict['mask']
-		fname = objDict['fname']
+	for objNum, obj in objDict.items():
+		# print(objNum, obj)
+		mask = obj['mask']
+		fname = obj['fname']
 		fpath = os.path.join(outDir, fname)
 		cv2.imwrite(fpath, mask)
-	cv2.imwrite(os.path.join(outDir, 'vis.png'), objDict['vis'])
+	cv2.imwrite(os.path.join(outDir, 'vis.png'), objDict['vis']['mask'])
