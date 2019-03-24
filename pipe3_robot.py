@@ -90,43 +90,47 @@ def downloadZip(url, outDir):
 		vis = cv2.cvtColor(vis, cv2.COLOR_RGB2BGR)
 		objDict.update({'vis' : {'mask' : vis, 'fname' : fname, 'url' : urlDict[fname]}})
 
-		
+		# Adds urllist
+		# print(urlDict[])
 
 		return objDict
 
 if __name__ == '__main__':
+	# Arguments
 	url = sys.argv[1]
 	fpath = sys.argv[2]
 	outDir = sys.argv[3]
+
+	# Sets proper outDir
+	newOutDir = fpath.split(os.sep)[-1]
+	newOutDir = newOutDir.split('.')[0]
+	outDir = os.path.join(outDir, newOutDir)
 	
+	# Uploads image to Detectron and gets return url for zip file
 	retUrl = upload(url, fpath)
 	print(retUrl)
 
-	# img = downloadImg(retUrl)
-	# with open('dl.png', 'wb') as fo:
-	# 	img.save(fo)
-
-	# jsonDict = downloadJson(retUrl)
-	# with open('dl.json', 'w') as of:
-	# 	json.dump(of, jsonDict, indent=2)
-
+	# Checks if it found anything
 	if not retUrl or not retUrl.startswith('http://'):
 		print(retUrl)
 
+	# Found some shit
 	else:
-		# outDir = 'download'
 		if not os.path.exists(outDir):
 			os.makedirs(outDir)
 
 		objDict = downloadZip(retUrl, outDir)
 		# print(objDict)
 		for objNum, obj in objDict.items():
-			# print(objNum, obj)
-			mask = obj['mask']
-			fname = obj['fname']
-			# print(fname)
-			furl = obj['url']
-			# print(furl)
-			fpath = os.path.join(outDir, fname)
-			cv2.imwrite(fpath, mask)
-		cv2.imwrite(os.path.join(outDir, 'vis.png'), objDict['vis']['mask'])
+			if objNum is not 'urllist':
+				# print(objNum, obj)
+				mask = obj['mask']
+				fname = obj['fname']
+				# print(fname)
+				furl = obj['url']
+				# print(furl)
+				fpath = os.path.join(outDir, fname)
+				cv2.imwrite(fpath, mask)
+
+			# else:
+			# 	

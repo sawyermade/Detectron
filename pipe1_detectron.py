@@ -137,7 +137,7 @@ def upload_file():
 			# print('**found file: {}'.format(file.filename))
 			fname = wz.secure_filename(file.filename)
 			fpath = os.path.join(app.config['UPLOAD_FOLDER'], fname)
-			# print(fpath)
+			# print(fname)
 			file.save(fpath)
 
 			
@@ -242,9 +242,11 @@ def upload_file():
 
 			# Creates urllist.txt
 			# print(onameList)
-			flistPath = os.path.join(args.output_dir, 'urllist.txt')
+			urlfname = 'urllist-{}.txt'.format(fname.split('.')[0])
+			flistPath = os.path.join(args.output_dir, urlfname)
 			opathList.append(flistPath)
 			arcnameList.append('urllist.txt')
+			# onameList.append(urlfname)
 			with open(flistPath, 'w') as fl:
 				count = 0
 				for oname in onameList:
