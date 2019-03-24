@@ -262,6 +262,7 @@ def vis_one_image_opencv(
         classRet.append(class_text)
         scoreRet.append(score)
 
+    print(bbRet, classRet, scoreRet, masks)
     return im, (bbRet, classRet, scoreRet, masks)
 
 
