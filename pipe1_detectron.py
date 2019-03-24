@@ -199,12 +199,13 @@ def upload_file():
 			)
 			# print('*************** after')
 			if not retVals:
-				return '***** No Objects Found!!! *****'
+				return 'No Objects Found'
 
-			bbList, classList, scoreList, masks = retVals
-			maskList = []
-			for i in range(masks.shape[-1]):
-				maskList.append(masks[...,i])
+			bbList, classList, scoreList, maskList = retVals
+			print('\nlen(maskList) = {}, len(bbList) = {}\n'.format(len(maskList), len(bbList)))
+			# maskList = []
+			# for i in range(masks.shape[-1]):
+			# 	maskList.append(masks[...,i])
 			# print(len(maskList))
 
 			# Creates json and images
@@ -230,21 +231,27 @@ def upload_file():
 					cv2.imwrite(opath, ma)
 					count += 1
 
-			# Creates filelist.txt
-			# print(onameList)
-			# flistPath = os.path.join(args.output_dir, 'filelist.txt')
-			# # opathList.append(flistPath)
-			# # arcnameList.append('filelist.txt')
-			# with open(flistPath, 'w') as fl:
-			# 	for oname in onameList:
-			# 		fl.write(oname + '\n')
+
 
 			# Save image
-			ofname = os.path.basename(fname) + '-out.' + args.output_ext
+			ofname = os.path.basename(fname) + '-vis.' + args.output_ext
 			out_name = os.path.join(args.output_dir, ofname)
 			cv2.imwrite(out_name, cvimg)
 			opathList.append(out_name)
 			arcnameList.append('vis.' + args.output_ext)
+
+			# Creates urllist.txt
+			# print(onameList)
+			flistPath = os.path.join(args.output_dir, 'urllist.txt')
+			opathList.append(flistPath)
+			arcnameList.append('urllist.txt')
+			with open(flistPath, 'w') as fl:
+				count = 0
+				for oname in onameList:
+					if not oname.endswith('csv'):
+						fl.write(FULLDOMAIN + UPLOAD_FOLDER_REL + oname + ',' + '{}.{}'.format(count, args.output_ext) + '\n')
+						count += 1
+				fl.write(FULLDOMAIN + UPLOAD_FOLDER_REL + ofname + ',' + 'vis.{}'.format(args.output_ext) + '\n')
 
 			# Zip files
 			zipFname = fname + '.zip'

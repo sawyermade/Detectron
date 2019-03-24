@@ -233,6 +233,7 @@ def vis_one_image_opencv(
     bbRet = []
     classRet = []
     scoreRet = []
+    masksRet = []
     for i in sorted_inds:
         bbox = boxes[i, :4]
         score = boxes[i, -1]
@@ -255,6 +256,7 @@ def vis_one_image_opencv(
             color_mask = color_list[mask_color_id % len(color_list), 0:3]
             mask_color_id += 1
             im = vis_mask(im, masks[..., i], color_mask)
+            masksRet.append(masks[..., i])
 
         # show keypoints
         if keypoints is not None and len(keypoints) > i:
@@ -265,7 +267,7 @@ def vis_one_image_opencv(
         scoreRet.append(score)
 
     # print(bbRet, classRet, scoreRet, masks)
-    return im, (bbRet, classRet, scoreRet, masks)
+    return im, (bbRet, classRet, scoreRet, masksRet)
 
 
 def vis_one_image(

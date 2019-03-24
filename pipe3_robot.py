@@ -31,8 +31,8 @@ def downloadJson(url):
 	
 	return jsonDict
 
-def downloadZip(url):
-	fname = 'tmp.zip'
+def downloadZip(url, outDir):
+	fname = os.path.join(outDir, 'tmp.zip')
 	r = requests.get(url)
 	with open(fname, 'wb') as of:
 		of.write(r.content)
@@ -40,7 +40,7 @@ def downloadZip(url):
 	with ZipFile(fname, 'r') as zf:
 		# Gets csv file
 		flist = zf.namelist()
-		print(flist)
+		# print(flist)
 		for f in flist:
 			if f.endswith('csv'):
 				csvFile = zf.open(f, 'r')
@@ -53,8 +53,19 @@ def downloadZip(url):
 					lineList[1] = float(lineList[1])
 					lineList[3:] = [int(f) for f in lineList[3:]]
 					csvList.append(lineList)
+					# print(csvList[-1])
 				csvFile.close()
 				break
+
+		# Adds urllist.txt
+		urlDict = {}
+		with zf.open('urllist.txt') as uf:
+			for line in uf:
+				line = line.decode('utf-8')
+				# print(line)
+				urlstr, fname = line.strip('\n').split(',')
+				urlDict.update({fname : urlstr})
+		# print(urlDict)
 
 		# # Rips images out of zip file
 		objDict = {}
@@ -68,7 +79,8 @@ def downloadZip(url):
 					'label' : label,
 					'bb' 	: [cmin, rmin, cmax, rmax],
 					'mask'  : maskimg,
-					'fname' : fname
+					'fname' : fname, 
+					'url'   : urlDict[fname]
 				}
 			})
 
@@ -76,13 +88,16 @@ def downloadZip(url):
 		fname = [f for f in flist if f.startswith('vis')][0]
 		vis = np.array(Image.open(zf.open(fname)))
 		vis = cv2.cvtColor(vis, cv2.COLOR_RGB2BGR)
-		objDict.update({'vis' : {'mask' : vis, 'fname' : fname}})
+		objDict.update({'vis' : {'mask' : vis, 'fname' : fname, 'url' : urlDict[fname]}})
+
+		
 
 		return objDict
 
 if __name__ == '__main__':
 	url = sys.argv[1]
 	fpath = sys.argv[2]
+	outDir = sys.argv[3]
 	
 	retUrl = upload(url, fpath)
 	print(retUrl)
@@ -95,15 +110,23 @@ if __name__ == '__main__':
 	# with open('dl.json', 'w') as of:
 	# 	json.dump(of, jsonDict, indent=2)
 
-	outDir = 'download'
-	if not os.path.exists(outDir):
-		os.makedirs(outDir)
-	objDict = downloadZip(retUrl)
-	# print(objDict)
-	for objNum, obj in objDict.items():
-		# print(objNum, obj)
-		mask = obj['mask']
-		fname = obj['fname']
-		fpath = os.path.join(outDir, fname)
-		cv2.imwrite(fpath, mask)
-	cv2.imwrite(os.path.join(outDir, 'vis.png'), objDict['vis']['mask'])
+	if not retUrl or not retUrl.startswith('http://'):
+		print(retUrl)
+
+	else:
+		# outDir = 'download'
+		if not os.path.exists(outDir):
+			os.makedirs(outDir)
+
+		objDict = downloadZip(retUrl, outDir)
+		# print(objDict)
+		for objNum, obj in objDict.items():
+			# print(objNum, obj)
+			mask = obj['mask']
+			fname = obj['fname']
+			# print(fname)
+			furl = obj['url']
+			# print(furl)
+			fpath = os.path.join(outDir, fname)
+			cv2.imwrite(fpath, mask)
+		cv2.imwrite(os.path.join(outDir, 'vis.png'), objDict['vis']['mask'])
