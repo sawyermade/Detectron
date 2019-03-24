@@ -211,25 +211,25 @@ def vis_one_image_opencv(
         im, boxes, segms=None, keypoints=None, thresh=0.9, kp_thresh=2,
         show_box=False, dataset=None, show_class=False):
     """Constructs a numpy array with the detections visualized."""
-    print('*********** in vis')
+    # print('*********** in vis')
     if isinstance(boxes, list):
         boxes, segms, keypoints, classes = convert_from_cls_format(
             boxes, segms, keypoints)
-    print('*********** in vis')
+    # print('*********** in vis')
     if boxes is None or boxes.shape[0] == 0 or max(boxes[:, 4]) < thresh:
         return im, None
-    print('*********** in vis')
+    # print('*********** in vis')
     if segms is not None and len(segms) > 0:
         masks = mask_util.decode(segms)
         color_list = colormap()
         mask_color_id = 0
 
-    print('*********** in vis')
+    # print('*********** in vis')
     # Display in largest to smallest order to reduce occlusion
     areas = (boxes[:, 2] - boxes[:, 0]) * (boxes[:, 3] - boxes[:, 1])
     sorted_inds = np.argsort(-areas)
     
-    print('*********** in vis')
+    # print('*********** in vis')
     bbRet = []
     classRet = []
     scoreRet = []
@@ -264,7 +264,7 @@ def vis_one_image_opencv(
         classRet.append(class_text)
         scoreRet.append(score)
 
-    print(bbRet, classRet, scoreRet, masks)
+    # print(bbRet, classRet, scoreRet, masks)
     return im, (bbRet, classRet, scoreRet, masks)
 
 
