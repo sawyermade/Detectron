@@ -197,7 +197,7 @@ def upload_file():
 				thresh=args.thresh,
 				kp_thresh=args.kp_thresh
 			)
-
+			print('*************** after')
 			bbList, classList, scoreList, masks = retVals
 			maskList = []
 			for i in range(masks.shape[-1]):
