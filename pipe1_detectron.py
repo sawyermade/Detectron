@@ -5,7 +5,7 @@ from __future__ import unicode_literals
 
 import os, sys, flask, werkzeug as wz, json
 from zipfile import ZipFile
-from urllib.parse import urljoin
+# from urllib.parse import urljoin
 # DOMAIN = '127.0.0.1'
 DOMAIN = 'home.sawyer0.com'
 PORT = 665
@@ -307,20 +307,12 @@ def main():
 
 	model = infer_engine.initialize_model_from_cfg(args.weights)
 	dummy_coco_dataset = dummy_datasets.get_coco_dataset()
-
-	# if os.path.isdir(args.im_or_folder):
-	#     im_list = glob.iglob(args.im_or_folder + '/*.' + args.image_ext)
-	# else:
-	#     im_list = [args.im_or_folder]
-
-	# for i, im_name in enumerate(im_list):
 	
 	# Setup upload folder and run server
 	if not os.path.exists(UPLOAD_FOLDER):
 		os.makedirs(UPLOAD_FOLDER)
 
 	app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
-	# app.run(port=PORT, host=DOMAIN, debug=False)
 	app.run(port=PORT, host='0.0.0.0', debug=False)
 
 if __name__ == '__main__':

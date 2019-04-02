@@ -31,10 +31,10 @@ def downloadJson(url):
 	
 	return jsonDict
 
-def downloadZip(url, outDir):
-	fname = os.path.join(outDir, 'tmp.zip')
-	r = requests.get(url)
-	with open(fname, 'wb') as of:
+def downloadZip(url, outDir='./'): 
+	fname = os.path.join(outDir, 'tmp.zip') 
+	r = requests.get(url) 
+	with open(fname, 'wb') as of: 
 		of.write(r.content)
 
 	with ZipFile(fname, 'r') as zf:
@@ -72,7 +72,7 @@ def downloadZip(url, outDir):
 		for i, lineList in enumerate(csvList):
 			fname, score, label, cmin, rmin, cmax, rmax = lineList
 			maskimg = np.array(Image.open(zf.open(fname)))
-			maskimg[maskimg > 0] = 255
+			# maskimg[maskimg > 0] = 255
 			objDict.update({
 				i : {
 					'score' : score,
