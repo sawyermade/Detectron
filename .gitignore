@@ -22,3 +22,7 @@ detectron/datasets/data/*
 
 # Generated C files
 detectron/utils/cython_*.c
+
+# Http output
+uploads-pipe1/*
+
