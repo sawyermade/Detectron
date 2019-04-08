@@ -108,7 +108,7 @@ if __name__ == '__main__':
 	
 	# Uploads image to Detectron and gets return url for zip file
 	retUrl = upload(url, fpath)
-	print(retUrl)
+	# print(retUrl)
 
 	# Checks if it found anything
 	if not retUrl or not retUrl.startswith('http://'):

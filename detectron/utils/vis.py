@@ -262,7 +262,12 @@ def vis_one_image_opencv(
         if keypoints is not None and len(keypoints) > i:
             im = vis_keypoints(im, keypoints[i], kp_thresh)
 
-        bbRet.append([int(b) for b in bbox])
+        
+        bbret = [int(b) for b in bbox]
+        bbRet.append(bbret)
+        # print(bbox)
+        # print(bbret)
+        # print(bbRet[-1], '\n')
         classRet.append(class_text)
         scoreRet.append(score)
 
