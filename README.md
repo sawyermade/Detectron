@@ -1,5 +1,5 @@
 # HTTP Server Setup
-Setup Conda Environment
+Download & Setup Conda Environment
 ```
 # Clone repo and enter directory
 $ git clone https://github.com/sawyermade/Detectron.git
@@ -18,6 +18,22 @@ $ pip install opencv-contrib-python
 
 # Build Detectron libs
 $ make
+```
+Run HTTP Sever
+```
+# Activate conda env above if not already active
+$ conda activate detectron
+
+# Run server, can run in screen or tmux
+$ bash http_server.sh
+```
+Run HTTP Client
+```
+# Activate conda env above if not already active
+$ conda activate detectron
+
+# Run client, IP_ADDRESS is address or domain of HTTP Server above
+$ bash http_client.sh http://IP_ADDRESS:665
 ```
 
 
