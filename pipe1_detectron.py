@@ -6,9 +6,9 @@ from __future__ import unicode_literals
 import os, sys, flask, werkzeug as wz, json
 from zipfile import ZipFile
 # from urllib.parse import urljoin
-# DOMAIN = '127.0.0.1'
+DOMAIN = '127.0.0.1'
 # DOMAIN = 'home.sawyer0.com'
-DOMAIN = '10.247.52.177'
+# DOMAIN = '10.247.52.177'
 PORT = 665
 FULLDOMAIN = 'http://{}:{}'.format(DOMAIN, PORT)
 ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg', 'gif', 'tiff', 'bmp'])

@@ -104,6 +104,7 @@ if __name__ == '__main__':
 	# Starts captures
 	tmpName = 'tmp-img.png'
 	tmpDir = 'tmp'
+	width, height = 640, 480
 
 	# Tries realsense first
 	try:
@@ -115,9 +116,10 @@ if __name__ == '__main__':
 		profile = pipeline.start(config)
 
 		while True:
+			print('realsense')
 			# Get frames
 			frames = pipeline.wait_for_frames()
-			frame = frames.get_color_frame()
+			frame = np.asanyarray(frames.get_color_frame().get_data())
 
 			# Writes img and uploads
 			cv2.imwrite(tmpName, frame)
@@ -140,7 +142,8 @@ if __name__ == '__main__':
 				cv2.destroyAllWindows()
 				break 
 
-	except:
+	except Exception as e:
+		print('in web cam, except: ', e)
 		cap = cv2.VideoCapture(0)
 		while True:
 			# Pulls frame
@@ -155,7 +158,7 @@ if __name__ == '__main__':
 			# Checks retUrl valid
 			if not retUrl and not retUrl.startswith('http://'):
 				continue
-			print('debug')
+			# print('debug')
 
 			# Downloads infered stuff
 			objDict = downloadZip(retUrl, tmpDir)
