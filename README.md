@@ -26,7 +26,7 @@ Run HTTP Sever
 $ conda activate detectron
 
 # Run server, can run in screen or tmux
-$ bash http_server.sh
+$ bash http_server.sh CUDA IP PORT
 ```
 Run HTTP Client
 ```
