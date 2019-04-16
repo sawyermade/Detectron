@@ -5,17 +5,15 @@ from __future__ import unicode_literals
 
 import os, sys, flask, werkzeug as wz, json
 from zipfile import ZipFile
-# from urllib.parse import urljoin
-DOMAIN = '127.0.0.1'
-# DOMAIN = 'home.sawyer0.com'
-# DOMAIN = '10.247.52.177'
-PORT = 665
+args = parse_args()
+DOMAIN = str(args.ip)
+PORT = int(args.port)
 FULLDOMAIN = 'http://{}:{}'.format(DOMAIN, PORT)
 ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg', 'gif', 'tiff', 'bmp'])
 UPLOAD_FOLDER = 'uploads-pipe1'
 UPLOAD_FOLDER_REL = '/uploads-pipe1/'
 app = flask.Flask(__name__)
-args = None
+
 dummy_coco_dataset = None
 model = None
 
@@ -111,13 +109,27 @@ def parse_args():
 	# parser.add_argument(
 	# 	'--im-or-folder', help='image or folder of images', default=None, dest='im_or_folder'
 	# )
-	# parser.add_argument(
-	# 	'--cuda',
-	# 	dest='cuda',
-	# 	help='Enter cuda card number to use as integer',
-	# 	default=0,
-	# 	type=int
-	# )
+	parser.add_argument(
+		'--cuda',
+		dest='cuda',
+		help='Enter cuda card number to use as integer',
+		default=0,
+		type=int
+	)
+	parser.add_argument(
+		'--ip',
+		dest='ip',
+		help='Server IP',
+		default=0,
+		type=int
+	)
+	parser.add_argument(
+		'--port',
+		dest='port',
+		help='Server Port',
+		default=0,
+		type=int
+	)
 	if len(sys.argv) == 1:
 		parser.print_help()
 		sys.exit(1)
@@ -319,5 +331,5 @@ def main():
 if __name__ == '__main__':
 	workspace.GlobalInit(['caffe2', '--caffe2_log_level=0'])
 	setup_logging(__name__)
-	args = parse_args()
+	# args = parse_args()
 	main()

@@ -5,4 +5,8 @@ sudo $CONDA_PREFIX/bin/python pipe1_detectron.py \
 	--image-ext jpg \
 	--wts ./models/e2e_mask_rcnn_R-101-FPN_2x.pkl \
 	--output-ext png \
-	--thresh 0.3
+	--thresh 0.3 \
+	--cuda $1 \
+	--ip $2 \
+	--port 665
+	
