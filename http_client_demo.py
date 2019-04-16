@@ -124,10 +124,10 @@ if __name__ == '__main__':
 			# Writes img and uploads
 			cv2.imwrite(tmpName, frame)
 			retUrl = upload(url, tmpName)
-			print(retUrl)
+			# print(retUrl)
 
 			# Checks retUrl valid
-			if not retUrl and not retUrl.startswith('http://'):
+			if not retUrl or not retUrl.startswith('http://'):
 				continue
 			print('debug')
 
