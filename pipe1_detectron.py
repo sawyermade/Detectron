@@ -3,6 +3,17 @@ from __future__ import division
 from __future__ import print_function
 from __future__ import unicode_literals
 
+import os, sys, flask, werkzeug as wz, json
+from zipfile import ZipFile
+from collections import defaultdict
+import argparse
+import cv2  # NOQA (Must import before importing caffe2 due to bug in cv2)
+import glob
+import logging
+# import os
+# import sys
+import time
+
 def parse_args():
 	parser = argparse.ArgumentParser(description='End-to-end inference')
 	parser.add_argument(
@@ -89,8 +100,7 @@ def parse_args():
 		sys.exit(1)
 	return parser.parse_args()
 
-import os, sys, flask, werkzeug as wz, json
-from zipfile import ZipFile
+
 args = parse_args()
 DOMAIN = str(args.ip)
 PORT = int(args.port)
@@ -102,15 +112,6 @@ app = flask.Flask(__name__)
 
 dummy_coco_dataset = None
 model = None
-
-from collections import defaultdict
-import argparse
-import cv2  # NOQA (Must import before importing caffe2 due to bug in cv2)
-import glob
-import logging
-# import os
-# import sys
-import time
 
 os.environ["CUDA_DEVICE_ORDER"]="PCI_BUS_ID"
 os.environ["CUDA_VISIBLE_DEVICES"]=str(args.cuda)
