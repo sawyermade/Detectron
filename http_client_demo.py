@@ -136,6 +136,7 @@ if __name__ == '__main__':
 
 			# Shows img
 			visImg = objDict['vis']['mask']
+			visImg = cv2.resize(visImg, (1200, 900))
 			cv2.imshow('Inference', visImg)
 			k = cv2.waitKey(1)
 			if k == 27:
