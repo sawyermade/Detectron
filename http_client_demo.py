@@ -31,7 +31,9 @@ def downloadJson(url):
 	
 	return jsonDict
 
-def downloadZip(url, outDir='./'): 
+def downloadZip(url, outDir='./'):
+	if not os.path.exists(outDir):
+		os.makedirs(outDir)
 	fname = os.path.join(outDir, 'tmp.zip') 
 	r = requests.get(url) 
 	with open(fname, 'wb') as of: 
@@ -98,39 +100,33 @@ def downloadZip(url, outDir='./'):
 if __name__ == '__main__':
 	# Arguments
 	url = sys.argv[1]
-	fpath = sys.argv[2]
-	outDir = sys.argv[3]
 
-	# Sets proper outDir
-	newOutDir = fpath.split(os.sep)[-1]
-	newOutDir = newOutDir.split('.')[0]
-	outDir = os.path.join(outDir, newOutDir)
-	
-	# Uploads image to Detectron and gets return url for zip file
-	retUrl = upload(url, fpath)
-	# print(retUrl)
-
-	# Checks if it found anything
-	if not retUrl or not retUrl.startswith('http://'):
+	# Starts captures
+	tmpName = 'tmp-img.png'
+	tmpDir = 'tmp'
+	cap = cv2.VideoCapture(0)
+	while True:
+		# Pulls frame
+		ret, frame = cap.read()
+		if not ret: continue
+		# Sends off to server
+		# print('debug')
+		cv2.imwrite(tmpName, frame)
+		retUrl = upload(url, tmpName)
 		print(retUrl)
 
-	# Found some shit
-	else:
-		if not os.path.exists(outDir):
-			os.makedirs(outDir)
+		# Checks retUrl valid
+		if not retUrl and not retUrl.startswith('http://'):
+			continue
+		print('debug')
 
-		objDict = downloadZip(retUrl, outDir)
-		# print(objDict)
-		for objNum, obj in objDict.items():
-			if objNum is not 'urllist':
-				# print(objNum, obj)
-				mask = obj['mask']
-				fname = obj['fname']
-				# print(fname)
-				furl = obj['url']
-				# print(furl)
-				fpath = os.path.join(outDir, fname)
-				cv2.imwrite(fpath, mask)
+		# Downloads infered stuff
+		objDict = downloadZip(retUrl, tmpDir)
 
-			# else:
-			# 	
+		# Shows img
+		visImg = objDict['vis']['mask']
+		cv2.imshow('Inference', visImg)
+		k = cv2.waitKey(1)
+		if k == 27:
+			cv2.destroyAllWindows()
+			break 
