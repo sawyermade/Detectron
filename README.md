@@ -1,3 +1,26 @@
+# HTTP Server Setup
+Setup Conda Environment
+```
+# Clone repo and enter directory
+$ git clone https://github.com/sawyermade/Detectron.git
+$ cd Detectron
+
+# Download model from facebook's model zoo
+$ wget https://dl.fbaipublicfiles.com/detectron/35861858/12_2017_baselines/e2e_mask_rcnn_R-101-FPN_2x.yaml.02_32_51.SgT4y1cO/output/train/coco_2014_train%3Acoco_2014_valminusminival/generalized_rcnn/model_final.pkl -O models/e2e_mask_rcnn_R-101-FPN_2x.pkl
+
+# Create conda environment with everything needed to run inference
+$ conda create -n detectron python=3.6 -y
+$ conda activate detectron
+$ conda install -c pytorch pytorch -y
+$ conda install -c conda-forge pyyaml=3.12 matplotlib cython mock scipy six future protobuf flask werkzeug requests numpy pycocotools pillow torchvision -y
+$ conda install -c menpo  opencv -y
+$ pip install opencv-contrib-python
+
+# Build Detectron libs
+$ make
+```
+
+
 # Detectron
 
 Detectron is Facebook AI Research's software system that implements state-of-the-art object detection algorithms, including [Mask R-CNN](https://arxiv.org/abs/1703.06870). It is written in Python and powered by the [Caffe2](https://github.com/caffe2/caffe2) deep learning framework.
