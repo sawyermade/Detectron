@@ -116,7 +116,7 @@ if __name__ == '__main__':
 		profile = pipeline.start(config)
 
 		while True:
-			print('realsense')
+			# print('realsense')
 			# Get frames
 			frames = pipeline.wait_for_frames()
 			frame = np.asanyarray(frames.get_color_frame().get_data())
@@ -129,7 +129,7 @@ if __name__ == '__main__':
 			# Checks retUrl valid
 			if not retUrl or not retUrl.startswith('http://'):
 				continue
-			print('debug')
+			# print('debug')
 
 			# Downloads infered stuff
 			objDict = downloadZip(retUrl, tmpDir)
