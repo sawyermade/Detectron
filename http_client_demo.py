@@ -104,29 +104,66 @@ if __name__ == '__main__':
 	# Starts captures
 	tmpName = 'tmp-img.png'
 	tmpDir = 'tmp'
-	cap = cv2.VideoCapture(0)
-	while True:
-		# Pulls frame
-		ret, frame = cap.read()
-		if not ret: continue
-		# Sends off to server
-		# print('debug')
-		cv2.imwrite(tmpName, frame)
-		retUrl = upload(url, tmpName)
-		print(retUrl)
 
-		# Checks retUrl valid
-		if not retUrl and not retUrl.startswith('http://'):
-			continue
-		print('debug')
+	# Tries realsense first
+	try:
+		import pyrealsense2 as rs 
+		pipeline = rs.pipeline()
+		config = rs.config()
+		config.enable_stream(rs.stream.depth, width, height, rs.format.z16, 30)
+		config.enable_stream(rs.stream.color, width, height, rs.format.bgr8, 30)
+		profile = pipeline.start(config)
 
-		# Downloads infered stuff
-		objDict = downloadZip(retUrl, tmpDir)
+		while True:
+			# Get frames
+			frames = pipeline.wait_for_frames()
+			frame = frames.get_color_frame()
 
-		# Shows img
-		visImg = objDict['vis']['mask']
-		cv2.imshow('Inference', visImg)
-		k = cv2.waitKey(1)
-		if k == 27:
-			cv2.destroyAllWindows()
-			break 
+			# Writes img and uploads
+			cv2.imwrite(tmpName, frame)
+			retUrl = upload(url, tmpName)
+			print(retUrl)
+
+			# Checks retUrl valid
+			if not retUrl and not retUrl.startswith('http://'):
+				continue
+			print('debug')
+
+			# Downloads infered stuff
+			objDict = downloadZip(retUrl, tmpDir)
+
+			# Shows img
+			visImg = objDict['vis']['mask']
+			cv2.imshow('Inference', visImg)
+			k = cv2.waitKey(1)
+			if k == 27:
+				cv2.destroyAllWindows()
+				break 
+
+	except:
+		cap = cv2.VideoCapture(0)
+		while True:
+			# Pulls frame
+			ret, frame = cap.read()
+			if not ret: continue
+			# Sends off to server
+			# print('debug')
+			cv2.imwrite(tmpName, frame)
+			retUrl = upload(url, tmpName)
+			print(retUrl)
+
+			# Checks retUrl valid
+			if not retUrl and not retUrl.startswith('http://'):
+				continue
+			print('debug')
+
+			# Downloads infered stuff
+			objDict = downloadZip(retUrl, tmpDir)
+
+			# Shows img
+			visImg = objDict['vis']['mask']
+			cv2.imshow('Inference', visImg)
+			k = cv2.waitKey(1)
+			if k == 27:
+				cv2.destroyAllWindows()
+				break 
