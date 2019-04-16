@@ -79,21 +79,21 @@ def parse_args():
 		dest='cuda',
 		help='Enter cuda card number to use as integer',
 		default=0,
-		type=int
+		type=str
 	)
 	parser.add_argument(
 		'--ip',
 		dest='ip',
 		help='Server IP',
 		default=0,
-		type=int
+		type=str
 	)
 	parser.add_argument(
 		'--port',
 		dest='port',
 		help='Server Port',
 		default=0,
-		type=int
+		type=str
 	)
 	if len(sys.argv) == 1:
 		parser.print_help()
