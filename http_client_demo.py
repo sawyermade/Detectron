@@ -143,7 +143,7 @@ if __name__ == '__main__':
 				break 
 
 	except Exception as e:
-		print('in web cam, except: ', e)
+		print(e)
 		cap = cv2.VideoCapture(0)
 		while True:
 			# Pulls frame
