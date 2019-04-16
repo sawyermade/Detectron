@@ -3,52 +3,6 @@ from __future__ import division
 from __future__ import print_function
 from __future__ import unicode_literals
 
-import os, sys, flask, werkzeug as wz, json
-from zipfile import ZipFile
-args = parse_args()
-DOMAIN = str(args.ip)
-PORT = int(args.port)
-FULLDOMAIN = 'http://{}:{}'.format(DOMAIN, PORT)
-ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg', 'gif', 'tiff', 'bmp'])
-UPLOAD_FOLDER = 'uploads-pipe1'
-UPLOAD_FOLDER_REL = '/uploads-pipe1/'
-app = flask.Flask(__name__)
-
-dummy_coco_dataset = None
-model = None
-
-from collections import defaultdict
-import argparse
-import cv2  # NOQA (Must import before importing caffe2 due to bug in cv2)
-import glob
-import logging
-# import os
-# import sys
-import time
-
-os.environ["CUDA_DEVICE_ORDER"]="PCI_BUS_ID"
-os.environ["CUDA_VISIBLE_DEVICES"]=str(args.cuda)
-
-from caffe2.python import workspace
-
-from detectron.core.config import assert_and_infer_cfg
-from detectron.core.config import cfg
-from detectron.core.config import merge_cfg_from_file
-from detectron.utils.io import cache_url
-from detectron.utils.logging import setup_logging
-from detectron.utils.timer import Timer
-import detectron.core.test_engine as infer_engine
-import detectron.datasets.dummy_datasets as dummy_datasets
-import detectron.utils.c2 as c2_utils
-import detectron.utils.vis as vis_utils
-
-c2_utils.import_detectron_ops()
-
-# OpenCL may be enabled by default in OpenCV3; disable it because it's not
-# thread safe and causes unwanted GPU memory allocations.
-cv2.ocl.setUseOpenCL(False)
-
-
 def parse_args():
 	parser = argparse.ArgumentParser(description='End-to-end inference')
 	parser.add_argument(
@@ -134,6 +88,51 @@ def parse_args():
 		parser.print_help()
 		sys.exit(1)
 	return parser.parse_args()
+
+import os, sys, flask, werkzeug as wz, json
+from zipfile import ZipFile
+args = parse_args()
+DOMAIN = str(args.ip)
+PORT = int(args.port)
+FULLDOMAIN = 'http://{}:{}'.format(DOMAIN, PORT)
+ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg', 'gif', 'tiff', 'bmp'])
+UPLOAD_FOLDER = 'uploads-pipe1'
+UPLOAD_FOLDER_REL = '/uploads-pipe1/'
+app = flask.Flask(__name__)
+
+dummy_coco_dataset = None
+model = None
+
+from collections import defaultdict
+import argparse
+import cv2  # NOQA (Must import before importing caffe2 due to bug in cv2)
+import glob
+import logging
+# import os
+# import sys
+import time
+
+os.environ["CUDA_DEVICE_ORDER"]="PCI_BUS_ID"
+os.environ["CUDA_VISIBLE_DEVICES"]=str(args.cuda)
+
+from caffe2.python import workspace
+
+from detectron.core.config import assert_and_infer_cfg
+from detectron.core.config import cfg
+from detectron.core.config import merge_cfg_from_file
+from detectron.utils.io import cache_url
+from detectron.utils.logging import setup_logging
+from detectron.utils.timer import Timer
+import detectron.core.test_engine as infer_engine
+import detectron.datasets.dummy_datasets as dummy_datasets
+import detectron.utils.c2 as c2_utils
+import detectron.utils.vis as vis_utils
+
+c2_utils.import_detectron_ops()
+
+# OpenCL may be enabled by default in OpenCV3; disable it because it's not
+# thread safe and causes unwanted GPU memory allocations.
+cv2.ocl.setUseOpenCL(False)
 
 def allowedFile(fname):
 	if fname[-3:].lower() in ALLOWED_EXTENSIONS or fname[-4:].lower() in ALLOWED_EXTENSIONS:
