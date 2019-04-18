@@ -10,8 +10,6 @@ import argparse
 import cv2  # NOQA (Must import before importing caffe2 due to bug in cv2)
 import glob
 import logging
-# import os
-# import sys
 import time
 
 def parse_args():
