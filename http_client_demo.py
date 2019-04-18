@@ -157,7 +157,7 @@ if __name__ == '__main__':
 			print(retUrl)
 
 			# Checks retUrl valid
-			if not retUrl and not retUrl.startswith('http://'):
+			if not retUrl or not retUrl.startswith('http://'):
 				continue
 			# print('debug')
 
