@@ -135,6 +135,7 @@ if __name__ == '__main__':
 			objDict = downloadZip(retUrl, tmpDir)
 
 			# Shows img
+			print('showing img')
 			visImg = objDict['vis']['mask']
 			visImg = cv2.resize(visImg, (1200, 900))
 			cv2.imshow('Inference', visImg)
