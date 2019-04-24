@@ -324,7 +324,8 @@ def main():
 		os.makedirs(UPLOAD_FOLDER)
 
 	app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
-	app.run(port=PORT, host='0.0.0.0', debug=False)
+	# app.run(port=PORT, host='0.0.0.0', debug=False)
+	app.run(port=PORT, host=DOMAIN, debug=False)
 
 if __name__ == '__main__':
 	workspace.GlobalInit(['caffe2', '--caffe2_log_level=0'])
