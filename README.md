@@ -1,3 +1,5 @@
+# UPDATE, NEWEST VERSIONS NOW @ https://github.com/CARRTUSF/HRI_WMRA/tree/master/daniel/Detectron
+
 # HTTP Server Setup
 Download & Setup Conda Environment
 ```
